@@ -7,7 +7,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-
+import org.openqa.selenium.chrome.ChromeOptions;
 
 import in.rakesh.redbus.pages.SearchPage;
 import io.cucumber.java.Before;
@@ -28,13 +28,16 @@ public class SearchStep {
 
 		System.setProperty("webdriver.chrome.driver", 
 				"/home/rakesh.chauhan/Documents/chromedriver");
-		driver = new ChromeDriver();
+		ChromeOptions options = new ChromeOptions();
+//		options.addArguments("--headless","--window-size=1920,1200");
+		driver = new ChromeDriver(options);
 	}
 	
 	
 	@Given("open redbus url")
-	public void open_redbus_url() {
+	public void open_redbus_url() throws Exception{
 		driver.get(url);
+		Thread.sleep(2000);
 		Sp = new SearchPage();
 		inp_from = Sp.getInputFrom(driver);
 		inp_to = Sp.getInputTo(driver);
@@ -89,6 +92,7 @@ public class SearchStep {
 		Thread.sleep(2000);
 		String redirectUrl = driver.getCurrentUrl();
 		Assert.assertEquals(redirectUrl.contains("search"), expectedRedirectUrl.contains("search"));
+		driver.close();
 	}
 
 	
